@@ -4,6 +4,10 @@ namespace DesignMyNight\Mongodb\Passport;
 
 use Jenssegers\Mongodb\Eloquent\Model;
 
+/**
+ * This is the same as the original class in https://github.com/laravel/passport, except for
+ * the model that got switched out for the Mongodb model.
+ */
 class PersonalAccessClient extends Model
 {
     /**
@@ -27,6 +31,6 @@ class PersonalAccessClient extends Model
      */
     public function client()
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Passport::clientModel());
     }
 }

@@ -4,6 +4,10 @@ namespace DesignMyNight\Mongodb\Passport;
 
 use Jenssegers\Mongodb\Eloquent\Model;
 
+/**
+ * This is the same as the original class in https://github.com/laravel/passport, except for
+ * the model that got switched out for the Mongodb model.
+ */
 class Client extends Model
 {
     /**
@@ -35,10 +39,23 @@ class Client extends Model
      * @var array
      */
     protected $casts = [
+        'grant_types' => 'array',
         'personal_access_client' => 'bool',
         'password_client' => 'bool',
         'revoked' => 'bool',
     ];
+
+    /**
+     * Get the user that the client belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(
+            config('auth.providers.'.config('auth.guards.api.provider').'.model')
+        );
+    }
 
     /**
      * Get all of the authentication codes for the client.
@@ -47,7 +64,7 @@ class Client extends Model
      */
     public function authCodes()
     {
-        return $this->hasMany(AuthCode::class);
+        return $this->hasMany(Passport::authCodeModel(), 'client_id');
     }
 
     /**
@@ -57,7 +74,7 @@ class Client extends Model
      */
     public function tokens()
     {
-        return $this->hasMany(Token::class);
+        return $this->hasMany(Passport::tokenModel(), 'client_id');
     }
 
     /**
@@ -79,7 +96,7 @@ class Client extends Model
     {
         return false;
     }
-    
+
     /**
      * Determine if the client is a confidential client.
      *
