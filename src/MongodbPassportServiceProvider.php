@@ -8,6 +8,7 @@ use Laravel\Passport\Passport;
 use DesignMyNight\Mongodb\Passport\AuthCode;
 use DesignMyNight\Mongodb\Passport\Client;
 use DesignMyNight\Mongodb\Passport\PersonalAccessClient;
+use DesignMyNight\Mongodb\Passport\RefreshToken;
 use DesignMyNight\Mongodb\Passport\Token;
 
 class MongodbPassportServiceProvider extends ServiceProvider
@@ -22,6 +23,6 @@ class MongodbPassportServiceProvider extends ServiceProvider
         Passport::useClientModel(Client::class);
         Passport::useAuthCodeModel(AuthCode::class);
         Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
-
+        Passport::useRefreshTokenModel(RefreshToken::class);
     }
 }
